@@ -4,4 +4,5 @@ dist
 .sass-cache
 bower_components
 test/bower_components
-logs
+app/logs/*.csv
+app/logs/*.txt

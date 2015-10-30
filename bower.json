@@ -1,0 +1,16 @@
+{
+  "name": "temp",
+  "private": true,
+  "dependencies": {
+    "Chart.js": "~1.0.2",
+    "epoch": "~0.8.3",
+    "jquery": "~2.1.1",
+    "Materialize": "materialize#~0.97.1",
+    "modernizr": "~2.8.1",
+    "underscore": "~1.8.3"
+  },
+  "devDependencies": {
+    "chai": "~3.4.0",
+    "mocha": "~2.3.3"
+  }
+}

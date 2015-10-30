@@ -24,9 +24,11 @@ var rebuildArray = function() {
     return newData;
 }
 
-s = fs.createReadStream('../logs/1509.log.txt')
-    .pipe(es.split())
-    .pipe(es.mapSync(function(line) {
+s = fs.createReadStream('../logs/1509.log.txt');
+
+var cut = s.pipe(es.split())
+
+    cut.pipe(es.mapSync(function(line) {
         s.pause();
 
         // CURRENT LINE NUMBER
@@ -66,30 +68,35 @@ s = fs.createReadStream('../logs/1509.log.txt')
         })
         .on('end', function() {
 
-            // =====================================================
-            // PROTOTYPE JSON QUERY FUNCTIONS BASED ON STACKOVERFLOW
-            // =====================================================
-            /* var counter = 0;
-            var checkForValue = function(json, value) {
-                for (key in json) {
-                    if (typeof (json[key]) === "object") {
-                        return checkForValue(json[key], value);
-                    } else if (json[key] === value) {
-                        counter +=1;
-                    }
-                }
-                return false;
-            }
-            var newOutput = JSON.stringify(__.uniq(output, false, function(item){
-                return item['time'] && item['cs-uri-stem']
-            }));
-            for (var i = 0; i < newOutput.length; i++) {
-                checkForValue(newOutput, "/podcast/sketches/179-12.mp3")
-            } */
-
             var output = rebuildArray(),
                 newOutput = JSON.stringify(output);
 
             fs.writeFileSync("../logs/output.json", newOutput);
         })
+
+        // RETURN OUTPUT FOR EXPORT?!?
+        /*
+            // tools.js
+            // ========
+            module.exports = {
+                foo: function () {
+                    // whatever
+                },
+                bar: function () {
+                    // whatever
+                }
+            };
+
+            var zemba = function () {
+            }
+        */
+
+        /*
+            // app.js
+            // ======
+            var tools = require('./tools');
+            console.log(typeof tools.foo); // => 'function'
+            console.log(typeof tools.bar); // => 'function'
+            console.log(typeof tools.zemba); // => undefined
+        */
 );

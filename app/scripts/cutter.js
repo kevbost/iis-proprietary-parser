@@ -3,8 +3,7 @@ var fs = require('fs'),
     stream = require('stream'),
     es = require("event-stream"),
     __ = require("underscore"),
-    request = require("request"),
-    helper = require('./_tools.js');
+    request = require("request");
 
 var lineNr = 1,
     count = 0,

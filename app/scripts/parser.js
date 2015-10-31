@@ -1,4 +1,6 @@
+/*
 // ORIGINAL PROTOTYPE, DEPRECIATED
+// USE CUTTER.JS
 
 var fs = require('fs'),
     util = require('util'),
@@ -115,3 +117,4 @@ s = fs.createReadStream('../logs/1509.log.txt')
             console.log('m4a: ' + m4a)
         })
 );
+*/

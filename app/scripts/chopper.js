@@ -1,3 +1,6 @@
+/*
+// DEPRECIATED, USE CUTTER.JS
+
 var fs = require('fs'),
     util = require('util'),
     stream = require('stream'),
@@ -94,3 +97,4 @@ s = fs.createReadStream('../logs/1510.log.txt')
             fs.writeFileSync("../logs/log-october-2015.json", newOutput);
         })
 );
+*/

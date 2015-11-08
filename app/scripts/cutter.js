@@ -1,3 +1,7 @@
+/*
+// DEPRECIATED
+// USE CHOPPER.JS
+
 var fs = require('fs'),
     // util = require('util'),
     // stream = require('stream'),
@@ -77,9 +81,9 @@ var tools = {
 };
 
 var s = fs.createReadStream('../logs/1510.log.txt', function(){
-    'use strict';
-    console.log('yes');
-})
+        'use strict';
+        console.log('yes');
+    })
     .pipe(es.split())
     .pipe(es.mapSync(function(line) {
         'use strict';
@@ -101,7 +105,7 @@ var s = fs.createReadStream('../logs/1510.log.txt', function(){
 
             // CONVERT ENTIRE FILE TO JSON ELIMINATING #HEADERS
             // =================================================
-            /*convertEntireLogFileToJSONEliminatingHeaders(line);*/
+            //convertEntireLogFileToJSONEliminatingHeaders(line);
 
             s.resume();
         })();
@@ -115,9 +119,9 @@ var s = fs.createReadStream('../logs/1510.log.txt', function(){
         // =====================================================
         // PROTOTYPE JSON QUERY FUNCTIONS BASED ON STACKOVERFLOW
         // =====================================================
-        /*var counter = 0;var checkForValue = function(json, value) {for (key in json) {if (typeof(json[key]) === "object") {return checkForValue(json[key], value);} else if (json[key] === value) {counter += 1;}}return false;}*/
-        /*for (var i = 0; i < newOutput.length; i++) {checkForValue(newOutput, "/podcast/sketches/179-12.mp3")}*/
-        /*newOutput = JSON.stringify(underscore.uniq(output, false, function(item) { return item['time'] && item['cs-uri-stem'] }));*/
+        // var counter = 0;var checkForValue = function(json, value) {for (key in json) {if (typeof(json[key]) === "object") {return checkForValue(json[key], value);} else if (json[key] === value) {counter += 1;}}return false;}
+        // for (var i = 0; i < newOutput.length; i++) {checkForValue(newOutput, "/podcast/sketches/179-12.mp3")}
+        // newOutput = JSON.stringify(underscore.uniq(output, false, function(item) { return item['time'] && item['cs-uri-stem'] }));
 
         var output = rebuildArray(),
         newOutput = JSON.stringify(output);
@@ -126,3 +130,4 @@ var s = fs.createReadStream('../logs/1510.log.txt', function(){
         fs.writeFileSync('../logs/tmp.json', newOutput);
     })
 );
+*/

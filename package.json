@@ -40,5 +40,8 @@
         "single"
       ]
     }
+  },
+  "dependencies": {
+    "colors": "^1.1.2"
   }
 }

@@ -119,16 +119,16 @@ var vm = {
 
     init: function() {
         'use strict';
-        loadJSON('../logs/log-september-2015.json', function(response) {
-            // Parse JSON string into object
-            september2015 = JSON.parse(response);
-            vm.begin(september2015);
-        });
-
-        // loadJSON('../logs/log-october-2015.json', function(response) {
-        //     october2015 = JSON.parse(response);
-        //     vm.begin(october2015);
+        // loadJSON('../logs/log-september-2015.json', function(response) {
+        //     // Parse JSON string into object
+        //     september2015 = JSON.parse(response);
+        //     vm.begin(september2015);
         // });
+
+        loadJSON('../logs/log-october-2015.json', function(response) {
+            october2015 = JSON.parse(response);
+            vm.begin(october2015);
+        });
     }
 };
 

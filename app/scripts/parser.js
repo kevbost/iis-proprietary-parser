@@ -1,6 +1,6 @@
 /*
 // ORIGINAL PROTOTYPE, DEPRECIATED
-// USE CUTTER.JS
+// USE CHOPPER.JS
 
 var fs = require('fs'),
     util = require('util'),

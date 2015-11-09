@@ -1,4 +1,7 @@
-var fs = require('fs'),
+// DEPRECIATED
+// USE MINCER.JS
+
+/*var fs = require('fs'),
     es = require('event-stream'),
     underscore = require('underscore'),
     colors = require('colors');
@@ -167,3 +170,4 @@ var s = fs.createReadStream($$$.sourceFile, function(){
 
     })
 );
+*/

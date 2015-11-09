@@ -12,6 +12,7 @@ var $$$ = {
     data: [
         ['date', 'time', 's-ip', 'cs-method', 'cs-uri-stem', 'cs-uri-query', 's-port', 'cs-username', 'c-ip', 'cs(User-Agent)', 'cs(Cookie)', 'cs(Referer)', 'sc-status', 'sc-substatus', 'sc-win32-status', 'sc-bytes', 'cs-bytes', 'time-taken', 'unique-id']
     ],
+    formattedData: [],
     lineNr: 1,
     count: 0,
     matchCount: 0,
@@ -26,7 +27,7 @@ var $$$ = {
             // remove '#Fields' from array to build dynamic IIS Key
             // ====================================================
 
-            $$$.newData = [];
+            var newData = [];
 
             for (var i = 1; i < $$$.data.length; i++) {
                 var jsonVariable = {};
@@ -34,9 +35,9 @@ var $$$ = {
                     var jsonKey = $$$.data[0][x];
                     jsonVariable[jsonKey] = $$$.data[i][x];
                 }
-                $$$.newData.push(jsonVariable);
+                newData.push(jsonVariable);
             }
-            return $$$.newData;
+            return $$$.formattedData = newData;
         },
 
         parseJSONforAudioReferences: function(line){
@@ -71,7 +72,18 @@ var $$$ = {
             'use strict';
             // ADD "IF (COUNT <= NUMBER)" TO THIS BECAUSE 100,000+ LINE FILES U KNO?
             // =====================================================================
-            if (line.indexOf('#') === 0) {
+            if (lineNr === 4) {
+                // CREATE NEW ARRAY BY SPLITTING BY SPACES, PUSH TO $$$.DATA ARRAY
+                // ===========================================================
+                var arr = line.split(/[ ]+/);
+                $$$.matchCount += 1;
+                // ADD A UNIQUE ID TO EACH OBJECT, PUSHED TO THE END, MAPPING TO THE LAST KEY VALUE
+                // ================================================================================
+                arr.push('id_' + (underscore.uniqueId() - 1));
+                $$$.data.push(arr);
+            } else if (line.indexOf('#') === 0) {
+                return
+            } else {
                 // CREATE NEW ARRAY BY SPLITTING BY SPACES, PUSH TO $$$.DATA ARRAY
                 // ===========================================================
                 var arr = line.split(/[ ]+/);
@@ -88,14 +100,16 @@ var $$$ = {
             // =====================================================
             // PROTOTYPE JSON QUERY FUNCTIONS BASED ON STACKOVERFLOW
             // =====================================================
-            /*var counter = 0;var checkForValue = function(json, value) {for (key in json) {if (typeof(json[key]) === "object") {return checkForValue(json[key], value);} else if (json[key] === value) {counter += 1;}}return false;}*/
-            /*for (var i = 0; i < $$$.newOutput.length; i++) {checkForValue($$$.newOutput, "/podcast/sketches/179-12.mp3")}*/
+            // var counter = 0;
+            // var checkForValue = function(json, value) {for (key in json) {if (typeof(json[key]) === "object") {return checkForValue(json[key], value);} else if (json[key] === value) {counter += 1;}}return false;}
+            // for (var i = 0; i < $$$.newOutput.length; i++) {checkForValue($$$.newOutput, "/podcast/sketches/179-12.mp3")}
 
             // var output = $$$.tools.rebuildArray();
             // $$$.newOutput = JSON.stringify(output);
-            $$$.newOutput = JSON.stringify(underscore.uniq($$$.output, false, function(item) {
+            $$$.output = underscore.uniq($$$.data, false, function(item) {
                 return item['time'] && item['cs-uri-stem']
-            }));
+            });
+            $$$.newOutput = JSON.stringify($$$.tools.rebuildArray());
             fs.writeFileSync($$$.destinationFile, $$$.newOutput);
         }
     }
@@ -115,7 +129,7 @@ var s = fs.createReadStream($$$.sourceFile, function(){
 
 
 
-        // FUNCTION PER LINE --> LINE === THIS (KIND OF!)
+        // FUNCTION PER LINE.  LINE === "THIS" (KIND OF!)
         // ==============================================
         (function() {
             // COUNT BECOMES FINAL LINE TOTAL, LOG WHEN FINISHED
@@ -128,7 +142,7 @@ var s = fs.createReadStream($$$.sourceFile, function(){
 
             // CONVERT ENTIRE FILE TO JSON ELIMINATING #HEADERS
             // =================================================
-            /*convertEntireLogFileToJSONEliminatingHeaders(line);*/
+            // $$$.tools.convertEntireLogFileToJSONEliminatingHeaders(line);
 
             s.resume();
         })();
@@ -141,29 +155,13 @@ var s = fs.createReadStream($$$.sourceFile, function(){
 
         Promise.all(
                 [$$$.tools.completeBuildOfNewJSON()]
-            ).then(
-                function(){
+            ).then(function(){
 
-                console.log(
-                    colors.green(
-                        colors.bold('\n\t   ' + 'Matched ' +
-                        colors.red($$$.matchCount) +
-                        ' entries.')
-                        )
-                    )
-                ;
-                console.log(
-                    colors.bold('reading from:\t' +
-                        colors.yellow( $$$.sourceFile) )
-                    )
-                ;
-                console.log(
-                    colors.bold('    ' + 'wrote to:\t' +
-                        colors.yellow( $$$.destinationFile )
-                        )
-                    )
-                ;
+                console.log(colors.green( colors.bold('\n\t   ' + 'Matched ' + colors.red($$$.matchCount) + ' entries.') ) );
+                console.log(colors.bold('reading from:\t' + colors.yellow( $$$.sourceFile) ) );
+                console.log(colors.bold('    ' + 'wrote to:\t' + colors.yellow( $$$.destinationFile ) ) );
 
+                // console.log($$$.formattedData)
             }
         );
 

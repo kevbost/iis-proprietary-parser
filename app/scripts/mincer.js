@@ -3,14 +3,34 @@ var fs = require('fs'),
     underscore = require('underscore'),
     colors = require('colors');
 
+var argumentSplit = process.argv.slice(2).toString().split(',');
+
 var $$ = {
     data: [],
     mutatedData: undefined,
     cleanedData: undefined,
     lineNr: 1,
     matchCount: 0,
-    sourceFile: '../logs/u_ex1510.log.txt',
-    destinationFile: '../logs/log-october-2015.json',
+    // sourceFile: '../logs/u_ex1510.log.txt',
+    // destinationFile: '../logs/log-october-2015.json',
+    sourceFile: argumentSplit[0],
+    destinationFile: argumentSplit[1],
+    // sourceFile: 'string',
+    // destinationFile: 'string',
+
+    errorMessageInstructions: colors.bold('$ node <file> path/to/pathtosource.log.txt path/to/pathtodest.json'),
+
+    checkArguments: function() {
+      if ($$.sourceFile.length === 0) {
+        console.log(colors.bold('\nMissing '.yellow + 'read source'.red + ' file, please provide the '.yellow + 'path/to/file'.red + ' of IIS.log.txt'.yellow));
+        console.log($$.errorMessageInstructions)
+      } else if ($$.destinationFile === undefined) {
+        console.log(colors.bold('\nMissing '.yellow + 'write'.red + ' destination, please provide the '.yellow + 'path/to/file'.red + ' of whateverfile.json'.yellow));
+        console.log($$.errorMessageInstructions)
+      }
+      // console.log($$.sourceFile.length === 0)
+      // console.log($$.destinationFile)
+    },
 
     parseJSONforAudioReferences: function(line){
         'use strict';
@@ -63,6 +83,10 @@ var $$ = {
 };
 
 var s = fs.createReadStream($$.sourceFile)
+    .on('error', function() {
+        'use strict';
+        $$.checkArguments();
+    })
     .pipe(es.split())
     .pipe(es.mapSync(function(line) {
         'use strict';
@@ -73,27 +97,24 @@ var s = fs.createReadStream($$.sourceFile)
             s.resume();
         })();
     })
-    .on('error', function() {
-        'use strict';
-        console.log('Error while reading file.');
-    })
     .on('end', function() {
         'use strict';
         Promise.all(
                 [
+                    $$.checkArguments(),
                     $$.rebuildArray(),
                     $$.removeDuplicatesFromMutatedData(),
                     $$.stringifyMutatedData()
                 ]
             ).then(function(){
+                fs.writeFileSync($$.destinationFile, $$.finalJSON);
+
                 var srcSize = fs.statSync($$.sourceFile);
                 var destSize = fs.statSync($$.destinationFile);
 
                 console.log(colors.green( colors.bold('\n\t   ' + 'Matched ' + colors.red( $$.matchCount) + ' entries.') ) );
                 console.log(colors.bold('reading from:\t' + colors.yellow( $$.sourceFile) + '\tSize: ' + srcSize["size"] / 1000000.0 + 'mb'));
-                console.log(colors.bold('    ' + 'wrote to:\t' + colors.yellow( $$.destinationFile ) + '\tSize: ' + destSize["size"] / 1000000.0 + 'mb'));
-
-                fs.writeFileSync($$.destinationFile, $$.finalJSON);
+                console.log(colors.bold('    ' + 'wrote to:\t' + colors.yellow( $$.destinationFile ) + '\tSize: ' + destSize["size"] / 1000.0 + 'kb'));
 
             }
         );

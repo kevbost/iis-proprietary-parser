@@ -42,6 +42,7 @@
     }
   },
   "dependencies": {
-    "colors": "^1.1.2"
+    "colors": "^1.1.2",
+    "columnify": "^1.5.2"
   }
 }

@@ -131,33 +131,21 @@ var s = fs.createReadStream($$.sourceFile)
                 fs.writeFileSync($$.destinationFile, $$.finalJSON);
                 fs.writeFileSync($$.uniqueIPListFile, $$.uniqueIPList);
 
-                var srcSize = fs.statSync($$.sourceFile);
-                var destSize = fs.statSync($$.destinationFile);
-                var ipListSize = fs.statSync($$.uniqueIPListFile);
+                var srcSize = fs.statSync($$.sourceFile),
+                    destSize = fs.statSync($$.destinationFile),
+                    ipListSize = fs.statSync($$.uniqueIPListFile);
 
-                // console.log(colors.green(colors.bold('\n\t   ' + 'Matched ' + colors.red($$.matchCount) + ' entries.')));
-                // console.log(colors.green(colors.bold('\t   ' + 'Unique IPs ' + colors.red($$.uniqueIPList.length))));
-                // console.log(colors.bold('\nreading from:\t' + colors.yellow($$.sourceFile) + '\tSize: ' + srcSize['size'] / 1000000.0 + 'mb'));
-                // console.log(colors.bold('    ' + 'wrote to:\t' + colors.yellow($$.destinationFile) + '\tSize: ' + destSize['size'] / 1000.0 + 'kb'));
-                // console.log(colors.bold('    ' + 'IPs wrote:\t' + colors.yellow($$.uniqueIPListFile) + '\tSize: ' + ipListSize['size'] / 1000.0 + 'kb'));
+                // ORIGINAL CONSOLE.LOG
+                // ====================
+                // console.log(colors.green(colors.bold('\n\t   ' + 'Matched ' + colors.red($$.matchCount) + ' entries.'))); console.log(colors.green(colors.bold('\t   ' + 'Unique IPs ' + colors.red($$.uniqueIPList.length)))); console.log(colors.bold('\nreading from:\t' + colors.yellow($$.sourceFile) + '\tSize: ' + srcSize['size'] / 1000000.0 + 'mb')); console.log(colors.bold('    ' + 'wrote to:\t' + colors.yellow($$.destinationFile) + '\tSize: ' + destSize['size'] / 1000.0 + 'kb')); console.log(colors.bold('    ' + 'IPs wrote:\t' + colors.yellow($$.uniqueIPListFile) + '\tSize: ' + ipListSize['size'] / 1000.0 + 'kb'));
 
-                var _horizontalLine_ = {
-                    description: '   ------------'.gray,
-                    value: '-----------------------'.gray,
-                    filesize: '---------'.gray
-                };
-
-                var columns = {
-                    'Matched Entries': colors.red($$.matchCount),
-                    'Unique IPs': colors.red($$.uniqueIPList.length)
-                };
-
+                var _horizontalLine_ = { description: '   ------------'.gray, value: '-----------------------'.gray, filesize: '---------'.gray };
                 var data = [
-                    _horizontalLine_, {
+                    {
                         description: colors.green(colors.bold('   IPs Wrote To')),
                         value: colors.yellow($$.uniqueIPListFile),
                         filesize: colors.magenta(colors.bold(ipListSize['size'] / 1000.0 + 'kb'))
-                    }, _horizontalLine_, {
+                    }, {
                         description: colors.green(colors.bold('   Reading From')),
                         value: colors.yellow($$.sourceFile),
                         filesize: colors.magenta(colors.bold(srcSize['size'] / 1000000.0 + 'mb'))
@@ -165,7 +153,7 @@ var s = fs.createReadStream($$.sourceFile)
                         description: colors.green(colors.bold('   Wrote To')),
                         value: colors.yellow($$.destinationFile),
                         filesize: colors.magenta(colors.bold(destSize['size'] / 1000.0 + 'kb'))
-                    }, _horizontalLine_, {
+                    }, {
                         description: colors.green(colors.bold('   Matched Entries')),
                         value: colors.yellow($$.matchCount)
                     }, {
@@ -176,18 +164,14 @@ var s = fs.createReadStream($$.sourceFile)
 
                 console.log('\n\n');
                 console.log(columnify(data, {
-                    // maxWidth: 10
                     columnSplitter: colors.gray('   |   '),
                     config: {
                         description: { headingTransform: function(heading) { return colors.white(colors.bold(colors.hidden('   ' + heading.toUpperCase()))) } },
                         value: { headingTransform: function(heading) { return colors.white(colors.bold(colors.hidden(heading.toUpperCase()))) } },
                         filesize: { headingTransform: function(heading) { return colors.white(colors.bold(colors.hidden(heading.toUpperCase()))) } }
                     }
-                }))
+                }));
                 console.log('\n');
-
-                    // console.log(columns, {columns: [" ", " "]})
-                    // console.log(colors.bold(columnify(columns, {columns: [colors.bold('description'), colors.bold('value')]})))
             });
 
         })

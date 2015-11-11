@@ -16,7 +16,7 @@ var $$ = {
     matchCount: 0,
     sourceFile: commandLineArguments[2],
     destinationFile: commandLineArguments[3],
-    uniqueIPListFile: undefined,
+    uniqueIPListFile: [],
     errorMessageInstructions: colors.bold('$ node <file> path/to/pathtosource.log.txt path/to/pathtodest.json'),
 
     checkArguments: function() {
@@ -98,6 +98,9 @@ var $$ = {
     stringifyMutatedData: function() {
         'use strict';
         $$.finalJSON = JSON.stringify($$.cleanedData);
+        $$.uniqueIPList = $$.uniqueIPList.sort();
+        $$.uniqueIPList = JSON.stringify($$.uniqueIPList);
+
     }
 };
 

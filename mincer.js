@@ -4,29 +4,11 @@ var fs = require('fs'),
     es = require('event-stream'),
     underscore = require('underscore'),
     colors = require('colors'),
-    columnify = require('columnify'),
-    simple_spinner = require('simple-spinner'),
-    ansi = require('ansi'),
-    cursor = ansi(process.stdout);
-
-    // cursor.bg.grey().underline()
-    var hexNumberValue = 5001;
-    var timer = setInterval(function () {
-        var hexStringValue = '#ff' + hexNumberValue;
-        cursor.hex(hexStringValue);
-        hexNumberValue *= 5;
-    }, 100);
-
-    simple_spinner.start(100);
-    simple_spinner.change_sequence([
-        "|...........|"
-        ,"\\.........../"
-        ,"-...........-"
-        ,"/...........\\"
-        ,"|...........|"
-    ]);
+    columnify = require('columnify');
 
 var commandLineArguments = process.argv;
+
+// var { first, last, ssn } = { first: 'Robert', last: 'Pearce', ssn: 'xxx-xx-xxxx' };
 
 var $$ = {
     data: [],
@@ -39,16 +21,15 @@ var $$ = {
     sourceFile: commandLineArguments[2],
     destinationFile: commandLineArguments[3],
     uniqueIPListFile: [],
-    errorMessageInstructions: colors.bold('$ node <file> path/to/pathtosource.log.txt path/to/pathtodest.json\n'),
+    errorMessageInstructions: colors.bold('$ node <file> path/to/pathtosource.log.txt path/to/pathtodest.json'),
 
     checkArguments: function() {
         'use strict';
-        cursor.horizontalAbsolute(0).eraseLine()
         if ($$.sourceFile.length === 0) {
-            console.log(colors.bold('\nMissing read source file, please provide the path/to/file of IIS.log.txt'.white));
+            console.log(colors.bold('\nMissing '.yellow + 'read source'.red + ' file, please provide the '.yellow + 'path/to/file'.red + ' of IIS.log.txt'.yellow));
             console.log($$.errorMessageInstructions);
         } else if ($$.destinationFile === undefined) {
-            console.log(colors.bold('\nMissing write destination, please provide the path/to/file of whateverfile.json'.white));
+            console.log(colors.bold('\nMissing '.yellow + 'write'.red + ' destination, please provide the '.yellow + 'path/to/file'.red + ' of whateverfile.json'.yellow));
             console.log($$.errorMessageInstructions);
         }
     },
@@ -62,7 +43,6 @@ var $$ = {
             tmp.push('unique-id');
             tmp.shift();
             $$.data.push(tmp);
-            $$.uniqueIPList.push(tmp[8]);
         } else if (audiotypes && !bots) {
             $$.matchCount += 1;
             var buffer = line.split(/[ ]+/);
@@ -141,7 +121,6 @@ s = fs.createReadStream($$.sourceFile)
                 $$.extractUniqueIPs(line);
                 $$.lineNr += 1;
                 s.resume();
-
             })();
         })
         .on('end', function() {
@@ -155,7 +134,6 @@ s = fs.createReadStream($$.sourceFile)
                     $$.stringifyMutatedData()
                 ]
             ).then(function() {
-                cursor.horizontalAbsolute(0).eraseLine()
                 fs.writeFileSync($$.destinationFile, $$.finalJSON);
                 fs.writeFileSync($$.uniqueIPListFile, $$.uniqueIPList);
 
@@ -170,22 +148,22 @@ s = fs.createReadStream($$.sourceFile)
                 var _horizontalLine_ = { description: '   ------------'.gray, value: '-----------------------'.gray, filesize: '---------'.gray };
                 var data = [
                     {
-                        description: colors.green(colors.bold('\t\tIPs Wrote To')),
+                        description: colors.green(colors.bold('   IPs Wrote To')),
                         value: colors.yellow($$.uniqueIPListFile),
                         filesize: colors.magenta(colors.bold(ipListSize['size'] / 1000.0 + 'kb'))
                     }, {
-                        description: colors.green(colors.bold('\t\tReading From')),
+                        description: colors.green(colors.bold('   Reading From')),
                         value: colors.yellow($$.sourceFile),
                         filesize: colors.magenta(colors.bold(srcSize['size'] / 1000000.0 + 'mb'))
                     }, {
-                        description: colors.green(colors.bold('\t\tWrote To')),
+                        description: colors.green(colors.bold('   Wrote To')),
                         value: colors.yellow($$.destinationFile),
                         filesize: colors.magenta(colors.bold(destSize['size'] / 1000.0 + 'kb'))
                     }, {
-                        description: colors.green(colors.bold('\t\tMatched Entries')),
+                        description: colors.green(colors.bold('   Matched Entries')),
                         value: colors.yellow($$.matchCount)
                     }, {
-                        description: colors.green(colors.bold('\t\tUnique IPs')),
+                        description: colors.green(colors.bold('   Unique IPs')),
                         value: colors.yellow($$.uniqueIPList.length)
                     }
                 ];
@@ -200,8 +178,6 @@ s = fs.createReadStream($$.sourceFile)
                     }
                 }));
                 console.log('\n');
-                simple_spinner.stop();
-                clearInterval(timer);
             });
 
         })

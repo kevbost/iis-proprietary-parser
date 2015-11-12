@@ -1,6 +1,12 @@
+
+
 var september2015,
     october2015,
     _;
+
+var test = function(){
+    console.log('hi');
+}
 
 // // Get context with jQuery - using jQuery's .get() method.
 // var ctx = $("#myChart").get(0).getContext("2d");

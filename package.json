@@ -44,5 +44,26 @@
   "dependencies": {
     "colors": "^1.1.2",
     "columnify": "^1.5.2"
-  }
+  },
+  "name": "pahscripts",
+  "description": "Proprietary IIS log parser creating a JSON object that matches specific criteria of audiofiles &amp;&amp; !bots.  Written in node.",
+  "version": "1.0.0",
+  "main": "gulpfile.babel.js",
+  "bin": {
+    "mincer": "./test.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevbost/iis-proprietary-parser.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevbost/iis-proprietary-parser/issues"
+  },
+  "homepage": "https://github.com/kevbost/iis-proprietary-parser#readme"
 }

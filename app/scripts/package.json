@@ -1,0 +1,20 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "main": "test.js",
+  "bin": {
+    "mincer": "./test.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "ansi": "^0.3.0",
+    "progress": "^1.1.8",
+    "simple-spinner": "0.0.5"
+  }
+}

@@ -1,4 +1,3 @@
-// #!/usr/bin/env node --harmony_destructuring
 
 var fs = require('fs'),
     es = require('event-stream'),
@@ -160,7 +159,7 @@ s = fs.createReadStream($$.sourceFile)
             Promise.all(
                 [
                     $$.checkArguments(),
-                    $$.createUniqueIPFilePath(),
+                    // $$.createUniqueIPFilePath(),
                     $$.pushExtractedArraysToMainObject(),
                     $$.rebuildArray(),
                     $$.removeDuplicatesFromMutatedData(),
@@ -169,11 +168,9 @@ s = fs.createReadStream($$.sourceFile)
             ).then(function() {
                 cursor.horizontalAbsolute(0).eraseLine()
                 fs.writeFileSync($$.destinationFile, $$.finalJSON);
-                fs.writeFileSync($$.uniqueIPListFile, $$.uniqueIPList);
 
                 var srcSize = fs.statSync($$.sourceFile),
-                    destSize = fs.statSync($$.destinationFile),
-                    ipListSize = fs.statSync($$.uniqueIPListFile);
+                    destSize = fs.statSync($$.destinationFile);
 
                 // ORIGINAL CONSOLE.LOG
                 // ====================
